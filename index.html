@@ -3,50 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Pink Christmas Tree</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+    <title>Happy Anniversary & Birthday</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;700&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; overflow: hidden; background-color: #020005; font-family: 'Cinzel', serif; }
+        body { margin: 0; overflow: hidden; background-color: #0a0205; font-family: 'Noto Serif SC', serif; }
         #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
+        #video-feed { position: absolute; bottom: 20px; right: 20px; width: 240px; height: 180px; border-radius: 10px; border: 2px solid #FFC0CB; z-index: 2; transform: scaleX(-1); opacity: 0.6; mix-blend-mode: screen; display: none; }
         
-        /* 视频反馈框 */
-        #video-feed { 
-            position: absolute; bottom: 30px; left: 30px; width: 180px; height: 135px; 
-            border-radius: 12px; border: 2px solid rgba(255, 105, 180, 0.5); 
-            z-index: 5; transform: scaleX(-1); opacity: 0.8; object-fit: cover;
-            box-shadow: 0 0 20px rgba(255, 20, 147, 0.3); display: block; 
-        }
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 6vh; }
         
-        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 8vh; }
+        .title-group { text-align: center; color: #FFD1DC; text-shadow: 0 0 15px rgba(255, 105, 180, 0.6), 0 0 30px rgba(255, 215, 0, 0.4); animation: floatText 3s ease-in-out infinite alternate; }
+        h1 { margin: 0; font-weight: 700; font-size: 3.5rem; letter-spacing: 5px; background: linear-gradient(to bottom, #fff, #FFB6C1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { margin: 15px 0 0 0; font-weight: 300; font-size: 1.8rem; letter-spacing: 8px; color: #F0E68C; }
         
-        .title-group { text-align: center; animation: glowText 4s ease-in-out infinite alternate; }
-        h1 { margin: 0; font-weight: 700; font-size: 3.5rem; letter-spacing: 5px; color: #fff; background: linear-gradient(180deg, #fff 30%, #ff9a9e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.8)); }
-        h2 { margin: 15px 0 0 0; font-weight: 400; font-size: 1.5rem; letter-spacing: 8px; color: #FFB6C1; font-family: 'Noto Serif SC', serif; text-shadow: 0 0 10px rgba(255, 182, 193, 0.5); }
-        @keyframes glowText { from { filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.6)); } to { filter: drop-shadow(0 0 20px rgba(255, 20, 147, 1)); } }
+        @keyframes floatText { from { transform: translateY(0); opacity: 0.9; } to { transform: translateY(-10px); opacity: 1; } }
 
         .status-container { position: absolute; top: 20px; left: 20px; text-align: left; }
-        .status { margin-top: 5px; font-size: 12px; color: #ff8fa3; opacity: 0.8; font-family: 'Noto Serif SC', serif; }
-        
-        /* 加载层优化：默认隐藏，由JS控制显示，超时自动消失 */
-        #loading { 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            color: #FF69B4; z-index: 10; font-size: 14px; letter-spacing: 2px; text-align: center; 
-            background: rgba(0,0,0,0.8); padding: 20px; border-radius: 12px; border: 1px solid #FF1493;
-            transition: opacity 0.5s;
-        }
-        
-        .footer-instruction { position: absolute; bottom: 40px; width: 100%; text-align: center; z-index: 2; pointer-events: none; }
-        .gesture-list { display: inline-flex; gap: 30px; background: rgba(0, 0, 0, 0.4); padding: 15px 40px; border-radius: 50px; border: 1px solid rgba(255, 105, 180, 0.3); backdrop-filter: blur(5px); }
-        .gesture-item { color: #ffcce0; font-family: 'Noto Serif SC', serif; font-size: 14px; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
-        .gesture-icon { font-size: 18px; }
-        
-        #upload-btn { position: absolute; top: 20px; right: 20px; z-index: 4; padding: 8px 20px; background: rgba(255,20,147,0.2); border: 1px solid #FF1493; color: #fff; cursor: pointer; border-radius: 20px; pointer-events: auto; font-family: 'Noto Serif SC', serif; transition: 0.3s;}
-        #upload-btn:hover { background: #FF1493; box-shadow: 0 0 15px #FF1493; }
+        .status { margin-top: 5px; font-size: 12px; color: #FF9E9E; opacity: 0.8; }
+        .highlight { color: #fff; font-weight: bold; }
+
+        #upload-btn { position: absolute; top: 20px; right: 20px; z-index: 4; padding: 10px 25px; background: rgba(255, 192, 203, 0.1); border: 1px solid #FFB6C1; color: #FFB6C1; cursor: pointer; border-radius: 20px; transition: all 0.3s; font-size: 12px; letter-spacing: 2px; font-family: 'Noto Serif SC', serif; backdrop-filter: blur(5px); pointer-events: auto; }
+        #upload-btn:hover { background: #FFB6C1; color: #000; box-shadow: 0 0 20px #FF69B4; border-color: transparent; }
         input[type="file"] { display: none; }
+        
+        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #FFB6C1; z-index: 10; font-size: 16px; letter-spacing: 2px; transition: opacity 0.5s; text-align: center; background: rgba(0,0,0,0.7); padding: 20px; border-radius: 10px;}
+        
+        .instruction { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: rgba(255, 182, 193, 0.7); font-size: 12px; text-align: center; z-index: 3; line-height: 1.8; letter-spacing: 1px; font-family: sans-serif; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 30px; }
     </style>
     
+    <!-- 核心修复：按顺序加载所有脚本，并添加 crossorigin 属性 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+    
+    <!-- PostProcessing 依赖链修复 -->
     <script src="https://unpkg.com/three@0.128.0/examples/js/shaders/CopyShader.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/EffectComposer.js" crossorigin="anonymous"></script>
@@ -54,19 +43,17 @@
     <script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/ShaderPass.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js" crossorigin="anonymous"></script>
     
-    <!-- 替换为 unpkg 源，有时候比 jsdelivr 更稳定 -->
-    <script src="https://unpkg.com/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <!-- MediaPipe 脚本 (使用 jsdelivr 并且不使用 ES Module 模式) -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
     <div id="loading">
-        ✨ 正在启动魔法引擎...<br>
-        <span style="font-size:12px; opacity:0.8; margin-top:10px; display:block; color:white">
-            如果画面卡住，请检查浏览器是否拦截了摄像头权限<br>或者直接点击屏幕开始
-        </span>
+        正在初始化视觉核心...<br>
+        <span style="font-size:12px; opacity:0.7; display:block; margin-top:10px;">如果长时间卡住，请尝试更换 Chrome 浏览器<br>或者使用 Live Server 运行</span>
     </div>
 
     <div id="ui-layer">
@@ -75,122 +62,96 @@
             <h2>领证一周年快乐！</h2>
         </div>
         <div class="status-container">
-            <div class="status">系统状态: <span id="gesture-detected" style="color:#fff; font-weight:bold">等待手势...</span></div>
+            <div class="status">当前状态: <span id="current-state" class="highlight">初始化...</span></div>
+            <div class="status">手势感应: <span id="gesture-detected" class="highlight">连接中...</span></div>
         </div>
     </div>
 
-    <div class="footer-instruction">
-        <div class="gesture-list">
-            <span class="gesture-item"><span class="gesture-icon">✊</span> 握拳：聚合</span>
-            <span class="gesture-item"><span class="gesture-icon">🖐</span> 张开：散开</span>
-            <span class="gesture-item"><span class="gesture-icon">👋</span> 移动：旋转</span>
-            <span class="gesture-item"><span class="gesture-icon">🤏</span> 捏合：抓取</span>
-        </div>
+    <div class="instruction">
+        🖐 张开手掌: 浪漫散开 | ✊ 握拳: 爱的聚合 | 🤏 捏合: 拾取回忆 | 👋 挥动: 环视星空
     </div>
-    
-    <button id="upload-btn" onclick="document.getElementById('file-input').click()">上传照片</button>
+
+    <button id="upload-btn" onclick="document.getElementById('file-input').click()">上传甜蜜合照</button>
     <input type="file" id="file-input" multiple accept="image/*">
 
-    <video id="video-feed" autoplay playsinline muted></video>
+    <video id="video-feed" playsinline></video>
     <div id="canvas-container"></div>
 
     <script>
         // 配置
         const CONFIG = {
-            particleCount: 8500,    
-            spiralPoints: 900,      
-            heartPoints: 600,       
-            layers: 6,              
-            treeHeight: 35,
-            baseRadius: 14,
+            particleCount: 1800,
+            starParticleCount: 200,
             colors: {
-                pink: new THREE.Color(0xFF1493),    
-                lightPink: new THREE.Color(0xFF69B4), 
+                pinkDeep: new THREE.Color(0xFF69B4),
+                pinkLight: new THREE.Color(0xFFB6C1),
+                gold: new THREE.Color(0xFFD700),
                 white: new THREE.Color(0xFFFFFF),
-                gold: new THREE.Color(0xFFD700)
+                champagne: new THREE.Color(0xF7E7CE)
             },
-            bloom: { strength: 2.0, radius: 0.6, threshold: 0.15 } 
+            treeHeight: 28,
+            treeRadius: 12,
+            bloomStrength: 1.8,
+            bloomRadius: 0.5,
+            bloomThreshold: 0.15
         };
 
-        const STATE = { mode: 'TREE', targetRotationY: 0, time: 0 };
+        const STATE = {
+            mode: 'TREE',
+            targetRotation: { x: 0, y: 0 },
+            focusedPhotoIndex: -1,
+            gesture: 'NONE'
+        };
 
         let scene, camera, renderer, composer;
-        let treeSystem, spiralSystem, heartSystem, snowSystem;
-        let treeData = [], spiralData = [], heartData = [];
+        let particlesMesh, starMesh; 
+        let dummy = new THREE.Object3D();
+        const particlesData = []; 
+        const starData = [];
 
-        // 纹理生成
-        function createSharpDot() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 32; canvas.height = 32;
-            const ctx = canvas.getContext('2d');
-            const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-            grad.addColorStop(0, 'rgba(255,255,255,1)');
-            grad.addColorStop(0.3, 'rgba(255,255,255,0.8)');
-            grad.addColorStop(0.5, 'rgba(255,255,255,0.2)');
-            grad.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, 32, 32);
-            return new THREE.CanvasTexture(canvas);
-        }
-
-        function createShapeTexture(type) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 64; canvas.height = 64;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = "#FFFFFF";
-            ctx.shadowBlur = 5; ctx.shadowColor = "#FF69B4";
-            const cx = 32, cy = 32;
-
-            if (type === 'star') {
-                const outerRadius = 24, innerRadius = 10;
-                ctx.beginPath();
-                for (let i = 0; i < 5; i++) {
-                    ctx.lineTo(Math.cos((18 + i * 72) / 180 * Math.PI) * outerRadius + cx, -Math.sin((18 + i * 72) / 180 * Math.PI) * outerRadius + cy);
-                    ctx.lineTo(Math.cos((54 + i * 72) / 180 * Math.PI) * innerRadius + cx, -Math.sin((54 + i * 72) / 180 * Math.PI) * innerRadius + cy);
-                }
-                ctx.closePath();
-            } else if (type === 'heart') {
-                ctx.beginPath();
-                ctx.moveTo(32, 54);
-                ctx.bezierCurveTo(32, 51, 10, 37, 10, 20);
-                ctx.bezierCurveTo(10, 5, 32, 5, 32, 20);
-                ctx.bezierCurveTo(32, 5, 54, 5, 54, 20);
-                ctx.bezierCurveTo(54, 37, 32, 51, 32, 54);
-            }
-            ctx.fill();
-            return new THREE.CanvasTexture(canvas);
-        }
-
-        const texDot = createSharpDot();
-        const texStar = createShapeTexture('star');
-        const texHeart = createShapeTexture('heart');
-
-        // 初始化 Three.js
         function initThree() {
             const container = document.getElementById('canvas-container');
             scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x020005, 0.02);
+            scene.fog = new THREE.FogExp2(0x1a050a, 0.02);
+            scene.background = new THREE.Color(0x1a050a);
+
             camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 15, 55);
+            camera.position.set(0, 2, 45);
             
-            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.toneMapping = THREE.ReinhardToneMapping;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
             container.appendChild(renderer.domElement);
 
-            if (THREE.UnrealBloomPass) {
-                const renderScene = new THREE.RenderPass(scene, camera);
-                const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), CONFIG.bloom.strength, CONFIG.bloom.radius, CONFIG.bloom.threshold);
+            const ambientLight = new THREE.AmbientLight(0xffccdd, 0.4);
+            scene.add(ambientLight);
+            const pointLight = new THREE.PointLight(0xFFD700, 2, 100);
+            pointLight.position.set(10, 20, 20);
+            scene.add(pointLight);
+            const pinkLight = new THREE.PointLight(0xFF69B4, 2, 100);
+            pinkLight.position.set(-10, 10, -10);
+            scene.add(pinkLight);
+
+            // 修复 UnrealBloomPass 依赖报错
+            const renderScene = new THREE.RenderPass(scene, camera);
+            
+            // 安全检查 Pass 是否加载
+            if(THREE.UnrealBloomPass) {
+                const bloomPass = new THREE.UnrealBloomPass(
+                    new THREE.Vector2(window.innerWidth, window.innerHeight),
+                    CONFIG.bloomStrength, CONFIG.bloomRadius, CONFIG.bloomThreshold
+                );
                 composer = new THREE.EffectComposer(renderer);
                 composer.addPass(renderScene);
                 composer.addPass(bloomPass);
-            } else { composer = null; }
+            } else {
+                console.warn("BloomPass failed to load, falling back to basic renderer");
+                composer = null;
+            }
 
-            createLayeredTree();
-            createSpiralLine();
-            create3DHeart();
-            createBackgroundSnow();
+            initParticles();
+            initStar();
 
             window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
@@ -198,202 +159,173 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 if(composer) composer.setSize(window.innerWidth, window.innerHeight);
             });
-            animate();
             
-            // 强制移除 Loading 遮罩（如果5秒后还在）
-            setTimeout(() => {
-                const loader = document.getElementById('loading');
-                if(loader) loader.style.opacity = 0;
-                setTimeout(() => { if(loader) loader.style.display = 'none'; }, 500);
-            }, 5000);
+            animate();
         }
 
-        // 创建各部分
-        function createLayeredTree() {
-            const createSubSystem = (count, texture, sizeMod) => {
-                const geo = new THREE.BufferGeometry();
-                const positions = [], colors = [], sizes = [], phases = [];
-                const layerHeight = CONFIG.treeHeight / CONFIG.layers;
+        function initParticles() {
+            const geometry = new THREE.IcosahedronGeometry(0.25, 0);
+            const material = new THREE.MeshStandardMaterial({
+                color: 0xffffff, roughness: 0.2, metalness: 0.8, emissive: 0x220011,
+            });
+            particlesMesh = new THREE.InstancedMesh(geometry, material, CONFIG.particleCount);
+            particlesMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 
-                for(let i=0; i<count; i++) {
-                    const layerIndex = Math.floor(Math.random() * CONFIG.layers);
-                    const layerProgress = Math.random(); 
-                    const y = (layerIndex + layerProgress) * layerHeight; 
-                    let rBase = (1 - y/CONFIG.treeHeight) * CONFIG.baseRadius;
-                    let rLayerMod = (1 - layerProgress) * 2.5; 
-                    let r = rBase + rLayerMod;
-                    const radiusSample = Math.sqrt(Math.random()) * r;
-                    const angle = Math.random() * Math.PI * 2;
-                    const x = Math.cos(angle) * radiusSample;
-                    const z = Math.sin(angle) * radiusSample;
-                    const finalY = y - CONFIG.treeHeight / 2 + 5;
+            for (let i = 0; i < CONFIG.particleCount; i++) {
+                const angle = i * 0.15; 
+                const y = (i / CONFIG.particleCount) * CONFIG.treeHeight; 
+                const radius = Math.pow((1 - i / CONFIG.particleCount), 0.8) * CONFIG.treeRadius; 
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
 
-                    positions.push(x, finalY, z);
-                    const colorMix = Math.random();
-                    const c = new THREE.Color();
-                    if(colorMix > 0.9) c.copy(CONFIG.colors.white);
-                    else if (colorMix > 0.6) c.copy(CONFIG.colors.lightPink);
-                    else c.copy(CONFIG.colors.pink);
-                    
-                    colors.push(c.r, c.g, c.b);
-                    sizes.push((Math.random() * 0.6 + 0.4) * sizeMod);
-                    phases.push(Math.random() * Math.PI * 2);
+                const rScatter = 30;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos((Math.random() * 2) - 1);
+                const sx = rScatter * Math.sin(phi) * Math.cos(theta);
+                const sy = rScatter * Math.sin(phi) * Math.sin(theta);
+                const sz = rScatter * Math.cos(phi);
 
-                    treeData.push({ base: new THREE.Vector3(x, finalY, z), scatter: new THREE.Vector3((Math.random()-0.5)*80, (Math.random()-0.5)*80, (Math.random()-0.5)*80), geoIndex: i * 3, system: geo });
+                const rand = Math.random();
+                let pColor;
+                let isPhoto = false;
+
+                if (i > CONFIG.particleCount - 60) {
+                    isPhoto = true;
+                    pColor = CONFIG.colors.white;
+                } else {
+                    if (rand < 0.5) pColor = CONFIG.colors.pinkLight;
+                    else if (rand < 0.8) pColor = CONFIG.colors.pinkDeep;
+                    else if (rand < 0.95) pColor = CONFIG.colors.champagne;
+                    else pColor = CONFIG.colors.gold;
                 }
-                geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-                geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-                geo.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
-                geo.setAttribute('phase', new THREE.Float32BufferAttribute(phases, 1));
-                const mat = new THREE.PointsMaterial({ size: 0.6, map: texture, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.95 });
-                const mesh = new THREE.Points(geo, mat);
-                scene.add(mesh);
-                return mesh;
-            };
-            const total = CONFIG.particleCount;
-            treeSystem = { dots: createSubSystem(total * 0.8, texDot, 1.0), stars: createSubSystem(total * 0.1, texStar, 1.5), hearts: createSubSystem(total * 0.1, texHeart, 1.5) };
-        }
 
-        function createSpiralLine() {
-            const geo = new THREE.BufferGeometry();
-            const positions = [], sizes = [];
-            const loops = 6; 
-            for(let i=0; i<CONFIG.spiralPoints; i++) {
-                const progress = i / CONFIG.spiralPoints;
-                const angle = progress * Math.PI * 2 * loops;
-                const y = progress * CONFIG.treeHeight - CONFIG.treeHeight/2 + 5;
-                const r = ((1 - progress) * CONFIG.baseRadius + 2.5) * 1.1;
-                const x = Math.cos(angle) * r;
-                const z = Math.sin(angle) * r;
-                positions.push(x, y, z);
-                sizes.push(1.2);
-                spiralData.push({ base: new THREE.Vector3(x, y, z), angleOffset: angle, radius: r, y: y });
+                particlesData.push({
+                    index: i, isPhoto: isPhoto,
+                    position: new THREE.Vector3(x, y - 12, z),
+                    scale: new THREE.Vector3(1, 1, 1),
+                    rotation: new THREE.Euler(Math.random()*Math.PI, Math.random()*Math.PI, 0),
+                    treePos: new THREE.Vector3(x, y - 12, z),
+                    scatterPos: new THREE.Vector3(sx, sy, sz),
+                    color: pColor.clone(),
+                    phase: Math.random() * Math.PI * 2
+                });
+                particlesMesh.setColorAt(i, pColor);
             }
-            geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            geo.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
-            const mat = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 1.0, map: texDot, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 1.0 });
-            spiralSystem = new THREE.Points(geo, mat);
-            scene.add(spiralSystem);
+            particlesMesh.instanceColor.needsUpdate = true;
+            scene.add(particlesMesh);
         }
 
-        function create3DHeart() {
-            const geo = new THREE.BufferGeometry();
-            const positions = [], sizes = [];
-            for(let i=0; i<CONFIG.heartPoints; i++) {
-                let done = false;
-                while(!done) {
-                    const x = (Math.random() - 0.5) * 3, y = (Math.random() - 0.5) * 3, z = (Math.random() - 0.5) * 3;
-                    const a = x, b = y * 1.2, c = z;
-                    const eq = Math.pow(a*a + 2.25*b*b + c*c - 1, 3) - a*a*c*c*c - 0.1125*b*b*c*c*c;
-                    if(eq < 0) {
-                        const startY = CONFIG.treeHeight/2 + 7;
-                        positions.push(x * 1.5, y * 1.5 + startY, z * 1.5);
-                        sizes.push(Math.random() * 0.5 + 0.5);
-                        heartData.push({ relX: x * 1.5, relY: y * 1.5, relZ: z * 1.5, treeCenterY: startY, centerTarget: new THREE.Vector3(x * 3, y * 3 + 15, z * 3 + 30) });
-                        done = true;
-                    }
-                }
+        function initStar() {
+            const geometry = new THREE.OctahedronGeometry(0.2, 0);
+            const material = new THREE.MeshBasicMaterial({ color: 0xFFFF00 });
+            starMesh = new THREE.InstancedMesh(geometry, material, CONFIG.starParticleCount);
+            const starCenterY = CONFIG.treeHeight - 11;
+
+            for (let i = 0; i < CONFIG.starParticleCount; i++) {
+                const r = 1.5 * Math.random();
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.random() * Math.PI;
+                starData.push({
+                    posRel: new THREE.Vector3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi)),
+                    center: new THREE.Vector3(0, starCenterY, 0),
+                    scale: Math.random() * 0.5 + 0.5
+                });
+                starMesh.setColorAt(i, CONFIG.colors.gold);
             }
-            geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            geo.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
-            const mat = new THREE.PointsMaterial({ color: 0xFF1493, size: 1.0, map: texDot, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.8 });
-            heartSystem = new THREE.Points(geo, mat);
-            scene.add(heartSystem);
+            starMesh.instanceColor.needsUpdate = true;
+            scene.add(starMesh);
         }
 
-        function createBackgroundSnow() {
-            const geo = new THREE.BufferGeometry();
-            const positions = [];
-            for(let i=0; i<400; i++) { positions.push((Math.random() - 0.5) * 150, Math.random() * 100 - 50, (Math.random() - 0.5) * 100 - 20); }
-            geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            const mat = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.8, map: texHeart, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending });
-            snowSystem = new THREE.Points(geo, mat);
-            scene.add(snowSystem);
-        }
-
-        // 动画循环
         function animate() {
             requestAnimationFrame(animate);
-            STATE.time += 0.015;
+            const time = performance.now() * 0.001;
 
-            const systems = [treeSystem.dots, treeSystem.stars, treeSystem.hearts];
-            systems.forEach(sys => {
-                if (STATE.mode === 'TREE') sys.rotation.y = STATE.time * 0.1;
-                else sys.rotation.y += (STATE.targetRotationY - sys.rotation.y) * 0.05;
-            });
+            for (let i = 0; i < CONFIG.particleCount; i++) {
+                const data = particlesData[i];
+                let targetPos;
 
-            for(let i=0; i<treeData.length; i++) {
-                const d = treeData[i];
-                const positions = d.system.geometry.attributes.position.array;
-                const idx = d.geoIndex;
-                let target = STATE.mode === 'TREE' ? d.base : d.scatter;
-                positions[idx] += (target.x - positions[idx]) * 0.05;
-                positions[idx+1] += (target.y - positions[idx+1]) * 0.05;
-                positions[idx+2] += (target.z - positions[idx+2]) * 0.05;
-            }
-            systems.forEach(sys => sys.geometry.attributes.position.needsUpdate = true);
-
-            const spiralPos = spiralSystem.geometry.attributes.position.array;
-            for(let i=0; i<CONFIG.spiralPoints; i++) {
-                const i3 = i * 3, d = spiralData[i];
-                if(STATE.mode === 'TREE') {
-                    const currentAngle = d.angleOffset - STATE.time * 0.5;
-                    const x = Math.cos(currentAngle) * d.radius, z = Math.sin(currentAngle) * d.radius;
-                    spiralPos[i3] += (x - spiralPos[i3]) * 0.1;
-                    spiralPos[i3+1] += (d.y - spiralPos[i3+1]) * 0.1;
-                    spiralPos[i3+2] += (z - spiralPos[i3+2]) * 0.1;
-                } else {
-                    spiralPos[i3] += (d.base.x * 2 - spiralPos[i3]) * 0.05;
-                    spiralPos[i3+1] += (d.base.y - spiralPos[i3+1]) * 0.05;
-                    spiralPos[i3+2] += (d.base.z * 2 - spiralPos[i3+2]) * 0.05;
+                if (STATE.mode === 'TREE') {
+                    targetPos = data.treePos;
+                    data.position.y += Math.sin(time * 2 + data.phase) * 0.01; 
+                } else if (STATE.mode === 'SCATTER' || STATE.mode === 'PHOTO_FOCUS') {
+                    targetPos = data.scatterPos;
+                    data.position.x += Math.cos(time * 0.3 + data.phase) * 0.02;
+                    data.position.y += Math.sin(time * 0.3 + data.phase) * 0.02;
                 }
-            }
-            spiralSystem.geometry.attributes.position.needsUpdate = true;
 
-            const heartPos = heartSystem.geometry.attributes.position.array;
-            if (STATE.mode === 'TREE') heartSystem.rotation.y = -STATE.time * 0.8;
-            else heartSystem.rotation.y += (0 - heartSystem.rotation.y) * 0.05; 
+                if (STATE.mode === 'PHOTO_FOCUS' && i === STATE.focusedPhotoIndex) {
+                    const forward = new THREE.Vector3(0, 0, -8).applyQuaternion(camera.quaternion).add(camera.position);
+                    data.position.lerp(forward, 0.1);
+                    data.scale.lerp(new THREE.Vector3(10, 7.5, 0.1), 0.08);
+                    dummy.position.copy(data.position);
+                    dummy.lookAt(camera.position);
+                    data.rotation.x = dummy.rotation.x;
+                    data.rotation.y = dummy.rotation.y;
+                    data.rotation.z = dummy.rotation.z;
+                } else {
+                    data.position.lerp(targetPos, 0.04);
+                    data.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
+                    data.rotation.x += 0.005; data.rotation.y += 0.005;
+                }
+                dummy.position.copy(data.position);
+                dummy.rotation.copy(data.rotation);
+                dummy.scale.copy(data.scale);
+                dummy.updateMatrix();
+                particlesMesh.setMatrixAt(i, dummy.matrix);
+            }
+            particlesMesh.instanceMatrix.needsUpdate = true;
+
+            for (let i = 0; i < CONFIG.starParticleCount; i++) {
+                const sData = starData[i];
+                let currentCenter = sData.center.clone();
+                let scaleMult = 1;
+                if (STATE.mode !== 'TREE') { scaleMult = 10; currentCenter.set(0, 0, 0); }
+                const rotSpeed = time * 0.5;
+                const rotX = sData.posRel.x * Math.cos(rotSpeed) - sData.posRel.z * Math.sin(rotSpeed);
+                const rotZ = sData.posRel.x * Math.sin(rotSpeed) + sData.posRel.z * Math.cos(rotSpeed);
+                dummy.position.set(currentCenter.x + rotX * scaleMult, currentCenter.y + sData.posRel.y * scaleMult + Math.sin(time * 3) * 0.5, currentCenter.z + rotZ * scaleMult);
+                const s = sData.scale * (0.8 + 0.4 * Math.sin(time * 5 + i));
+                dummy.scale.set(s, s, s);
+                dummy.rotation.set(time, time, 0);
+                dummy.updateMatrix();
+                starMesh.setMatrixAt(i, dummy.matrix);
+            }
+            starMesh.instanceMatrix.needsUpdate = true;
+
+            if (STATE.mode === 'SCATTER') {
+                const r = 45;
+                const currentAngleX = Math.atan2(camera.position.x, camera.position.z);
+                const newX = Math.sin(currentAngleX + (STATE.targetRotation.x * 0.04)) * r;
+                const newZ = Math.cos(currentAngleX + (STATE.targetRotation.x * 0.04)) * r;
+                const newY = 2 + STATE.targetRotation.y * 15;
+                camera.position.lerp(new THREE.Vector3(newX, newY, newZ), 0.05);
+                camera.lookAt(0, 5, 0);
+            } else if (STATE.mode === 'TREE') {
+                const r = 45;
+                const x = r * Math.sin(time * 0.15); 
+                const z = r * Math.cos(time * 0.15);
+                camera.position.lerp(new THREE.Vector3(x, 2, z), 0.03);
+                camera.lookAt(0, 8, 0);
+            }
             
-            for(let i=0; i<CONFIG.heartPoints; i++) {
-                const i3 = i * 3, d = heartData[i];
-                let tx, ty, tz;
-                if (STATE.mode === 'TREE') { tx = d.relX; ty = d.relY + d.treeCenterY; tz = d.relZ; } 
-                else { tx = d.centerTarget.x; ty = d.centerTarget.y; tz = d.centerTarget.z; }
-                heartPos[i3] += (tx - heartPos[i3]) * 0.05;
-                heartPos[i3+1] += (ty - heartPos[i3+1]) * 0.05;
-                heartPos[i3+2] += (tz - heartPos[i3+2]) * 0.05;
-            }
-            heartSystem.geometry.attributes.position.needsUpdate = true;
-
-            const snowP = snowSystem.geometry.attributes.position.array;
-            for(let i=0; i<400; i++) {
-                const i3 = i * 3;
-                snowP[i3+1] -= 0.05;
-                if(snowP[i3+1] < -20) snowP[i3+1] = 40;
-            }
-            snowSystem.geometry.attributes.position.needsUpdate = true;
-
-            if(composer) composer.render(); else renderer.render(scene, camera);
+            if(composer) composer.render();
+            else renderer.render(scene, camera);
         }
 
-        // -----------------------------------------------------------
-        // MediaPipe 初始化逻辑
-        // -----------------------------------------------------------
         async function initMediaPipe() {
             const videoElement = document.getElementById('video-feed');
-            const statusElement = document.getElementById('gesture-detected');
+            const loadingText = document.getElementById('loading');
             
-            // 确保3D先渲染
-            await new Promise(r => setTimeout(r, 500));
-            
-            if (typeof Hands === 'undefined' || typeof Camera === 'undefined') {
-                console.warn("MediaPipe 库加载失败，仅展示3D效果");
-                return;
-            }
+            await new Promise(r => setTimeout(r, 1000));
 
             try {
-                // 使用 unpkg 源，尝试加载 hand 模型
-                const hands = new Hands({locateFile: (file) => `https://unpkg.com/@mediapipe/hands/${file}`});
+                if (typeof Hands === 'undefined') {
+                    throw new Error("MediaPipe JS 加载失败，请检查网络或使用科学上网");
+                }
+
+                const hands = new Hands({locateFile: (file) => {
+                    return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+                }});
                 
                 hands.setOptions({
                     maxNumHands: 1,
@@ -403,13 +335,14 @@
                 });
                 
                 hands.onResults((results) => {
-                    const loader = document.getElementById('loading');
-                    if (loader) loader.style.display = 'none';
-
+                    if(loadingText.style.display !== 'none') {
+                        loadingText.style.display = 'none';
+                        videoElement.style.display = 'block';
+                    }
                     if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                         detectGesture(results.multiHandLandmarks[0]);
                     } else {
-                        statusElement.innerText = "未检测到手";
+                        document.getElementById('gesture-detected').innerText = "等待手势...";
                     }
                 });
 
@@ -418,38 +351,79 @@
                     width: 320,
                     height: 240
                 });
-
-                await cameraFeed.start();
                 
+                await cameraFeed.start();
             } catch (error) {
-                console.error("Camera/MediaPipe Error:", error);
-                statusElement.innerText = "摄像头不可用 (仅展示模式)";
-                // 出错也移除 loading，保证用户能看到动画
-                const loader = document.getElementById('loading');
-                if(loader) loader.style.display = 'none';
+                console.error("MediaPipe Init Error:", error);
+                loadingText.innerHTML = "视觉组件加载超时<br><span style='font-size:12px'>请使用 Live Server 运行以解决 CORS 限制</span>";
+                
+                // 即使失败，也移除 loading 让 3D 画面显示
+                setTimeout(() => { loadingText.style.display = 'none'; }, 3000);
             }
         }
 
         function detectGesture(landmarks) {
-            const dist = (i, j) => Math.hypot(landmarks[i].x - landmarks[j].x, landmarks[i].y - landmarks[j].y);
-            const thumbTip = 4, indexTip = 8, palm = 9;
-            const pinch = dist(thumbTip, indexTip);
-            const handX = landmarks[palm].x;
+            const dist = (p1, p2) => Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+            const thumbTip = landmarks[4], indexTip = landmarks[8], middleTip = landmarks[12];
+            const pinkyTip = landmarks[20], wrist = landmarks[0], palmCenter = landmarks[9];
 
-            let gesture = '🌲 欣赏模式';
-            if (pinch < 0.05) { gesture = '🤏 抓取星光'; } 
-            else if (dist(8, 0) > 0.4) { gesture = '🖐 散开星尘'; STATE.mode = 'SCATTER'; } 
-            else { STATE.mode = 'TREE'; gesture = '✊ 聚合回忆'; }
-            
-            if (STATE.mode === 'SCATTER') STATE.targetRotationY = (handX - 0.5) * -3;
-            document.getElementById('gesture-detected').innerText = gesture;
+            const d_index = dist(indexTip, wrist);
+            const d_palm_avg = dist(palmCenter, wrist);
+            const pinchDist = dist(thumbTip, indexTip);
+            const isFist = (d_index < d_palm_avg * 1.1) && (dist(pinkyTip, wrist) < d_palm_avg * 1.1);
+            const isOpen = !isFist && (d_index > d_palm_avg * 1.3) && (dist(middleTip, wrist) > d_palm_avg * 1.3);
+
+            let currentGesture = '保持状态';
+            let newState = STATE.mode;
+
+            if (pinchDist < 0.05) {
+                currentGesture = '🤏 拾取回忆';
+                if (STATE.mode !== 'PHOTO_FOCUS') {
+                    newState = 'PHOTO_FOCUS';
+                    if (STATE.focusedPhotoIndex === -1) {
+                        const photos = particlesData.filter(p => p.isPhoto);
+                        if(photos.length > 0) STATE.focusedPhotoIndex = photos[Math.floor(Math.random() * photos.length)].index;
+                    }
+                }
+            } else if (isFist) {
+                currentGesture = '✊ 爱的聚合';
+                newState = 'TREE';
+                STATE.focusedPhotoIndex = -1;
+            } else if (isOpen) {
+                currentGesture = '🖐 浪漫散开';
+                newState = 'SCATTER';
+                if (STATE.mode === 'PHOTO_FOCUS') STATE.focusedPhotoIndex = -1;
+            }
+
+            document.getElementById('gesture-detected').innerText = currentGesture;
+            if (newState !== STATE.mode) {
+                STATE.mode = newState;
+                const statusText = STATE.mode === 'TREE' ? '❤️ 幸福凝聚中...' : (STATE.mode === 'SCATTER' ? '✨ 星河散落...' : '📸 珍贵瞬间');
+                document.getElementById('current-state').innerText = statusText;
+                gsap.to(scene.fog, { density: STATE.mode === 'TREE' ? 0.02 : 0.005, duration: 1.5 });
+            }
+
+            if (STATE.mode !== 'TREE') {
+                STATE.targetRotation.x = -(palmCenter.x - 0.5) * 2; 
+                STATE.targetRotation.y = -(palmCenter.y - 0.5) * 2;
+            }
         }
-
-        document.getElementById('file-input').addEventListener('change', (e) => {
-            if(e.target.files.length) alert("照片已上传到魔法库！");
+        
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            if (e.target.files.length) {
+                alert(`已注入 ${e.target.files.length} 份甜蜜回忆...`);
+                let photoIndex = 0;
+                for(let i = CONFIG.particleCount - 1; i >= 0 && photoIndex < e.target.files.length; i--) {
+                    if(particlesData[i].isPhoto) {
+                        particlesData[i].color.setHex(0xFFFFFF); 
+                        particlesMesh.setColorAt(i, particlesData[i].color);
+                        photoIndex++;
+                    }
+                }
+                particlesMesh.instanceColor.needsUpdate = true;
+            }
         });
 
-        // 启动
         initThree();
         initMediaPipe();
 
